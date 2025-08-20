@@ -1,0 +1,39 @@
+﻿using Microsoft.Extensions.Logging;
+
+namespace ErrorLoggingLibrary;
+
+internal class FileLogger (string filePath, LogLevel logLevel = LogLevel.Information) : ILogger {
+    private readonly string _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+    private readonly LogLevel _logLevel = logLevel;
+
+    IDisposable? ILogger.BeginScope<TState>(TState state) => null;
+
+    public bool IsEnabled(LogLevel logLevel) => logLevel >= _logLevel;
+
+    public void Log<TState> (LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter){
+        if (!IsEnabled(logLevel)){
+            return;
+        }
+
+        var logMessage = formatter(state, exception);
+        var logEntry = $"{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} [{logLevel}] {logMessage}";
+
+        WriteToFile(logEntry);
+    }
+
+    private void WriteToFile (string logEntry){
+        try {
+            var rootDirectory = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.FullName;
+
+            if (rootDirectory != null){
+                var logFilePath = Path.Combine(rootDirectory, "log.txt");
+            }  else {
+                rootDirectory = @"C:\Documents";
+            }
+            
+            File.AppendAllText(_filePath, logEntry + Environment.NewLine);
+        } catch (Exception ex) {
+            Console.Error.WriteLine($"Failed to write log to file: {ex.Message}");
+        }
+    }
+}
