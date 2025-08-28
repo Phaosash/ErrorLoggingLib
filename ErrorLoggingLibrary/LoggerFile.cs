@@ -2,10 +2,9 @@
 
 namespace ErrorLoggingLibrary;
 
-internal class LoggerFile(string filePath, LogLevel minLogLevel = LogLevel.Information, long maxFileSizeBytes = 5 * 1024 * 1024) : ILogger {
+public class LoggerFile (string filePath, long maxFileSizeBytes = 5 * 1024 * 1024) : ILogger, IDisposable {
     private readonly string _filePath = filePath;
     private readonly long _maxFileSizeBytes = maxFileSizeBytes;
-    private readonly LogLevel _minLogLevel = minLogLevel;
     private readonly Lock _fileLock = new();
 
     //  This can be used to return something useful if necessary
@@ -13,7 +12,11 @@ internal class LoggerFile(string filePath, LogLevel minLogLevel = LogLevel.Infor
         return null;
     }
 
-    public bool IsEnabled (LogLevel logLevel) => logLevel >= _minLogLevel;
+    public void Dispose (){
+        GC.SuppressFinalize(this);
+    }
+
+    public bool IsEnabled (LogLevel logLevel) => true;
 
     public void Log<TState> (LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter){
         ArgumentNullException.ThrowIfNull(formatter);
