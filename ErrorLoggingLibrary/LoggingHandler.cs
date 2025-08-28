@@ -44,14 +44,14 @@ public class LoggingHandler {
     }
 
     public void LogError (string msg, Exception ex){
-        _logger.LogError(ex, "Error occurred: {Message}", msg);
+        _logger?.LogError(ex, "Error occurred: {Message}", msg);
     }
 
     public void LogInformation (string msg){
-        _logger.LogInformation("Information: {Message}", msg);
+        _logger?.LogInformation("Information: {Message}", msg);
     }
 
     public void LogWarning (string msg){
-        _logger.LogWarning("Warning: {Message}", msg);
+        _logger?.LogWarning("Warning: {Message}", msg);
     }
 }
