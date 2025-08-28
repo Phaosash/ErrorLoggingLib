@@ -17,9 +17,13 @@ internal class FileLoggerProvider : ILoggerProvider {
         }
     }
 
-    public ILogger CreateLogger (string categoryName){
-        return new FileLogger(_filePath, _logLevel);
+    public ILogger CreateLogger(string categoryName)
+    {
+        throw new NotImplementedException();
     }
 
-    public void Dispose() { }
+    public void Dispose()
+    {
+        throw new NotImplementedException();
+    }
 }
