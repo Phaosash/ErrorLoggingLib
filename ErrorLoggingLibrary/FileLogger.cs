@@ -12,7 +12,12 @@ internal class FileLogger {
 
         var logMessage = $"{DateTime.Now:dd-MM-yyyy HH:mm:ss} [{logLevel}] {formatter(state, exception)}";
 
-        Task.Run(() => { lock (_fileLock){ LogToFile(logMessage); } });
+        Task.Run(() => {
+            lock (_fileLock)
+            {
+                LogToFile(logMessage);
+            }
+        });
     }
 
     //  This method writes a log message to a "logfile.txt" inside a logs directory in the application's base path,
