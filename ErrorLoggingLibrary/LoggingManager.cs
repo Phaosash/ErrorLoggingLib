@@ -22,8 +22,4 @@ public sealed class LoggingManager {
     public void LogError (Exception ex, string message){
         _fileManager.Log(LogLevel.Error, message, ex, (state, exception) => $"{state}: {exception?.Message}\nStackTrace: {exception?.StackTrace}");
     }
-
-    public void LogWarningWithException (Exception ex, string message){
-        _fileManager.Log(LogLevel.Warning, message, ex, (state, exception) => $"Warning: {state}. Exception: {exception?.Message}");
-    }
 }
