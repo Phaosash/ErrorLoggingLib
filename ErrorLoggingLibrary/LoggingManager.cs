@@ -2,7 +2,6 @@
 
 namespace ErrorLoggingLibrary;
 
-
 public sealed class LoggingManager {
     private const int DefaultRetentionPeriod = 7;
     private static readonly Lazy<LoggingManager> _instance = new(() => new LoggingManager(DefaultRetentionPeriod));
